@@ -75,6 +75,7 @@ namespace TestWPFBinding
 					{
 						MoveRight();
 					}
+					MonkeysToMoveCounter = 5;
 				}).Start();
 
 			}
@@ -104,11 +105,14 @@ namespace TestWPFBinding
 			NotifyPropertyChanged("IsArrowRightVisible");
 			if (MonkeysOnRopeCount <= 3 && MonkeyRightCount >= 0)
 			{
-				if ((IsRopeClear || IsMonkeyRightVisible == false) && MonkeyRightCount > 3)
+				if ((IsRopeClear || IsMonkeyRightVisible == false) && MonkeysOnRopeCount < 3)
 				{
 					MonkeysOnRopeCount = MonkeysOnRopeCount + 1 <= 3 ? MonkeysOnRopeCount + 1 : MonkeysOnRopeCount;
-					IsMonkeyRightVisible = true;
-					NotifyPropertyChanged("IsMonkeyRightVisible");
+					if (MonkeysOnRopeCount <= 3 && MonkeysToMoveCounter >= 3)
+					{
+						IsMonkeyRightVisible = true;
+						NotifyPropertyChanged("IsMonkeyRightVisible");
+					}
 					Thread.Sleep(1000);
 					return;
 				}
@@ -155,12 +159,16 @@ namespace TestWPFBinding
 					NotifyPropertyChanged("MonkeyRightCount");
 					Thread.Sleep(1000);
 
+					if (MonkeysToMoveCounter == 0)
+					{
+						IsArrowRightVisible = false;
+						NotifyPropertyChanged("IsArrowRightVisible");
+					}
+
 					return;
 				}
 			}
-			IsArrowRightVisible = false;
-			NotifyPropertyChanged("IsArrowRightVisible");
-			MonkeysToMoveCounter = 5;
+			
 		}
 
 		private void MoveLeft()
