@@ -87,8 +87,8 @@ namespace TestWPFBinding
 				}).Start();
 
 			}
-
-			else if(MonkeyLeftCount >= MonkeyRightCount)
+			//This is used for controlling which side to empty first. I was unable to get this working.
+			else if(MonkeyLeftCount >= MonkeyRightCount && MonkeyLeftCount > MonkeysToMoveCounter)
 			{
 				new Thread(() =>
 				{
@@ -105,7 +105,7 @@ namespace TestWPFBinding
 					MonkeysToMoveCounter = 5;
 				}).Start();
 			}
-			else
+			else if (MonkeyLeftCount < MonkeyRightCount && MonkeyRightCount > MonkeysToMoveCounter)
 			{
 				new Thread(() =>
 				{
@@ -125,18 +125,29 @@ namespace TestWPFBinding
 
 		}
 
+		/// <summary>
+		/// I use the visibility to show the monkeys moving across the line.
+		///  I do keep track of how many monkeys are currently on the line and the overall count of monkeys.
+		/// </summary>
 		private void MoveRight()
 		{
+			//We do not move monkeys until they have reached a specific threshold.
 			if (MonkeysToMoveCounter > MonkeyRightCount)
 			{
 				return;
 			}
+
+			//Makes sure to show and arrow signifing the direction of the monkeys being moved.
 			IsArrowRightVisible = true;
 			NotifyPropertyChanged("IsArrowRightVisible");
+
+			//First Step: The rope is clear and we add a monkey or the rope is ready to have a monkey.
 			if (MonkeysOnRopeCount <= 3 && MonkeyRightCount >= 0)
 			{
+				//The rope has a limit of 3 monkeys at a time and we make sure that there are monkeys to move.
 				if ((IsRopeClear || IsMonkeyRightVisible == false) && MonkeysOnRopeCount < 3)
 				{
+					//Making sure that we do not add more than 3 monkeys
 					MonkeysOnRopeCount = MonkeysOnRopeCount + 1 <= 3 ? MonkeysOnRopeCount + 1 : MonkeysOnRopeCount;
 					if (MonkeysOnRopeCount <= 3 && MonkeysToMoveCounter >= 3)
 					{
@@ -146,6 +157,7 @@ namespace TestWPFBinding
 					Thread.Sleep(1000);
 					return;
 				}
+				//Step Two: Moving the monkey further right to the 2nd of four positions.
 				else if (IsMonkeyRightVisible && IsMonkeyRightMiddleVisible == false)
 				{
 					IsMonkeyRightMiddleVisible = true;
@@ -157,6 +169,7 @@ namespace TestWPFBinding
 					return;
 
 				}
+				//Step Three: Move the monkey further right to the 3rd of four positions.
 				else if (IsMonkeyRightMiddleVisible && IsMonkeyLeftMiddleVisible == false)
 				{
 					IsMonkeyLeftMiddleVisible = true;
@@ -168,6 +181,7 @@ namespace TestWPFBinding
 					return;
 
 				}
+				//Step Four: Moving the to the last position when moving Right.
 				else if (IsMonkeyLeftMiddleVisible && IsMonkeyLeftVisible == false)
 				{
 					IsMonkeyLeftVisible = true;
@@ -179,6 +193,8 @@ namespace TestWPFBinding
 					return;
 
 				}
+				//Step Five: The monkey has cleared the rope. Remove it from the rope,
+				// the monkey count, and decrement the counter.
 				else if (IsMonkeyLeftVisible)
 				{
 					IsMonkeyLeftVisible = false;
@@ -189,6 +205,7 @@ namespace TestWPFBinding
 					NotifyPropertyChanged("MonkeyRightCount");
 					Thread.Sleep(1000);
 
+					//Used to hide the arrow so that we do not show one direction movement all the time.
 					if (MonkeysToMoveCounter == 0)
 					{
 						IsArrowRightVisible = false;
@@ -201,18 +218,29 @@ namespace TestWPFBinding
 			
 		}
 
+		/// <summary>
+		/// I use the visibility to show the monkeys moving across the line.
+		///  I do keep track of how many monkeys are currently on the line and the overall count of monkeys.
+		/// </summary>
 		private void MoveLeft()
 		{
+			//We do not move monkeys until they have reached a specific threshold.
 			if (MonkeysToMoveCounter > MonkeyLeftCount)
 			{
 				return;
 			}
+
+			//Makes sure to show and arrow signifing the direction of the monkeys being moved.
 			IsArrowLeftVisible = true;
 			NotifyPropertyChanged("IsArrowLeftVisible");
+
+			//The rope has a limit of 3 monkeys at a time and we make sure that there are monkeys to move.
 			if (MonkeysOnRopeCount <= 3 && MonkeyLeftCount >= 0)
 			{
+				//First Step: The rope is clear and we add a monkey or the rope is ready to have a monkey.
 				if ((IsRopeClear || IsMonkeyLeftVisible == false) && MonkeysOnRopeCount < 3)
 				{
+					//Making sure that we do not add more than 3 monkeys
 					MonkeysOnRopeCount = MonkeysOnRopeCount + 1 <= 3 ? MonkeysOnRopeCount + 1 : MonkeysOnRopeCount;
 					if (MonkeysOnRopeCount <= 3 && MonkeysToMoveCounter >= 3)
 					{
@@ -222,6 +250,7 @@ namespace TestWPFBinding
 					Thread.Sleep(1000);
 					return;
 				}
+				//Step Two: Moving the monkey further left to the 2nd of four positions.
 				else if (IsMonkeyLeftVisible && IsMonkeyLeftMiddleVisible == false)
 				{
 					IsMonkeyLeftMiddleVisible = true;
@@ -233,6 +262,8 @@ namespace TestWPFBinding
 					return;
 
 				}
+
+				//Step Three: Move the monkey further left to the 3rd of four positions.
 				else if (IsMonkeyLeftMiddleVisible && IsMonkeyRightMiddleVisible == false)
 				{
 					IsMonkeyRightMiddleVisible = true;
@@ -244,6 +275,8 @@ namespace TestWPFBinding
 					return;
 
 				}
+
+				//Step Four: Moving the to the last position when moving left.
 				else if (IsMonkeyRightMiddleVisible && IsMonkeyRightVisible == false)
 				{
 					IsMonkeyRightVisible = true;
@@ -255,6 +288,8 @@ namespace TestWPFBinding
 					return;
 
 				}
+				//Step five: The monkey has cleared the rope. Remove it from the rope,
+				// the monkey count, and decrement the counter.
 				else if (IsMonkeyRightVisible)
 				{
 					IsMonkeyRightVisible = false;
@@ -265,6 +300,7 @@ namespace TestWPFBinding
 					NotifyPropertyChanged("MonkeyLeftCount");
 					Thread.Sleep(1000);
 
+					//Used to hide the arrow so that we do not show one direction movement all the time.
 					if (MonkeysToMoveCounter == 0)
 					{
 						IsArrowLeftVisible = false;
@@ -276,6 +312,7 @@ namespace TestWPFBinding
 			}
 		}
 
+		//Check to see if there are no monkeys on the rope.
 		public bool IsRopeClear
 		{
 			get
