@@ -1,0 +1,61 @@
+﻿<Window x:Class="TestWPFBinding.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestWPFBinding"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="825">
+
+	<Grid>
+		<Grid.Resources>
+			<BooleanToVisibilityConverter x:Key="VisibliltyConverter" />
+		</Grid.Resources>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="100" />
+			<RowDefinition Height="250" />
+			<RowDefinition Height="100" />
+			<RowDefinition Height="100*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="200" />
+		</Grid.ColumnDefinitions>
+		<StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
+			<Button Name="_addMonkeyLeft" Content="Add Monkey" Width="100" Height="50" Click="_addMonkeyLeft_Click" />
+			<StackPanel Orientation="Horizontal">
+				<Image Name="_faceMonkeyLeft" Source="face_monkey.png" Height="50" Width="50" />
+				<TextBlock Name="_monkeyCountLeft" Text="{Binding MonkeyLeftCount, Mode=TwoWay}" FontSize="48" />
+			</StackPanel>
+		</StackPanel>
+		<StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="1" HorizontalAlignment="Center">
+			<Button Name="_addMonkeyRight" Content="Add Monkey" Width="100" Height="50" Click="_addMonkeyRight_Click" LostFocus="_addMonkeyRight_LostFocus" />
+			<StackPanel Orientation="Horizontal">
+				<Image Name="_faceMonkey" Source="face_monkey.png" Height="50" Width="50" />
+				<TextBlock Name="_monkeyCountRight" Text="{Binding MonkeyRightCount, Mode=TwoWay}" FontSize="48" />
+			</StackPanel>
+		</StackPanel>
+
+		<StackPanel Height="100" Width="100" Grid.Row="2" Grid.ColumnSpan="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<Image Name="_arrowLeft" Source="ArrowRight.png" Visibility="{Binding IsArrowLeftVisible, Converter={StaticResource VisibliltyConverter}}" />
+			<Image Name="_arrowRight" Source="ArrowLeft.png" Visibility="{Binding IsArrowRightVisible, Converter={StaticResource VisibliltyConverter}}" />
+		</StackPanel>
+		<Image Name="_monkeyProgressLeft" Source="face_monkey.png" Height="50" Width="50" Grid.Row="3" Grid.Column="1" 
+			   Visibility="{Binding IsMonkeyLeftVisible, Converter={StaticResource VisibliltyConverter}}" />
+		<Image Name="_monkeyProgressLeftMiddle" Source="face_monkey.png" Height="50" Width="50" Grid.Row="3" Grid.Column="2" 
+			   Visibility="{Binding IsMonkeyLeftMiddleVisible, Converter={StaticResource VisibliltyConverter}}" />
+		<Image Name="_monkeyProgressRightMiddle" Source="face_monkey.png" Height="50" Width="50" Grid.Row="3" Grid.Column="3" 
+			   Visibility="{Binding IsMonkeyRightMiddleVisible, Converter={StaticResource VisibliltyConverter}}" />
+
+		<StackPanel Height="50" Width="50" Grid.Row="4" Grid.Column="4" Visibility="{Binding IsMonkeyRightVisible, Converter={StaticResource VisibliltyConverter}}">
+			<Image Name="_monkeyProgressRight" Source="face_monkey.png" />
+		</StackPanel>
+		<GridSplitter Grid.Row="3" Grid.ColumnSpan="5" Width="Auto" Height="5" VerticalAlignment="Center" 
+					  HorizontalAlignment="Stretch" Background="Black" Margin="200,50,0,0"/>
+
+	</Grid>
+</Window>
