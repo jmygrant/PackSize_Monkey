@@ -62,7 +62,15 @@ namespace TestWPFBinding
 			//MoveLeft
 			if (MonkeyLeftCount > 0 && MonkeyRightCount == 0)
 			{
-				MoveLeft();
+				new Thread(() =>
+				{
+					Thread.CurrentThread.IsBackground = true;
+					while (MonkeysToMoveCounter > 0)
+					{
+						MoveLeft();
+					}
+					MonkeysToMoveCounter = 5;
+				}).Start();
 			}
 
 			//MoveRight
@@ -80,19 +88,6 @@ namespace TestWPFBinding
 
 			}
 
-			if (MonkeyLeftCount > 0 && MonkeyRightCount > 0)
-			{
-				Random random = new Random(DateTime.Now.Millisecond);
-				var randomValue = random.Next(1, 2);
-				if (randomValue % 2 == 0)
-				{
-					MoveLeft();
-				}
-				else
-				{
-					MoveRight();
-				}
-			}
 		}
 
 		private void MoveRight()
@@ -173,9 +168,76 @@ namespace TestWPFBinding
 
 		private void MoveLeft()
 		{
-			if (IsRopeClear)
+			if (MonkeysToMoveCounter > MonkeyLeftCount)
 			{
+				return;
+			}
+			IsArrowLeftVisible = true;
+			NotifyPropertyChanged("IsArrowLeftVisible");
+			if (MonkeysOnRopeCount <= 3 && MonkeyLeftCount >= 0)
+			{
+				if ((IsRopeClear || IsMonkeyLeftVisible == false) && MonkeysOnRopeCount < 3)
+				{
+					MonkeysOnRopeCount = MonkeysOnRopeCount + 1 <= 3 ? MonkeysOnRopeCount + 1 : MonkeysOnRopeCount;
+					if (MonkeysOnRopeCount <= 3 && MonkeysToMoveCounter >= 3)
+					{
+						IsMonkeyLeftVisible = true;
+						NotifyPropertyChanged("IsMonkeyLeftVisible");
+					}
+					Thread.Sleep(1000);
+					return;
+				}
+				else if (IsMonkeyLeftVisible && IsMonkeyLeftMiddleVisible == false)
+				{
+					IsMonkeyLeftMiddleVisible = true;
+					IsMonkeyLeftVisible = false;
+					NotifyPropertyChanged("IsMonkeyLeftVisible");
+					NotifyPropertyChanged("IsMonkeyLeftMiddleVisible");
+					Thread.Sleep(1000);
 
+					return;
+
+				}
+				else if (IsMonkeyLeftMiddleVisible && IsMonkeyRightMiddleVisible == false)
+				{
+					IsMonkeyRightMiddleVisible = true;
+					IsMonkeyLeftMiddleVisible = false;
+					NotifyPropertyChanged("IsMonkeyLeftMiddleVisible");
+					NotifyPropertyChanged("IsMonkeyRightMiddleVisible");
+					Thread.Sleep(1000);
+
+					return;
+
+				}
+				else if (IsMonkeyRightMiddleVisible && IsMonkeyRightVisible == false)
+				{
+					IsMonkeyRightVisible = true;
+					IsMonkeyRightMiddleVisible = false;
+					NotifyPropertyChanged("IsMonkeyRightMiddleVisible");
+					NotifyPropertyChanged("IsMonkeyRightVisible");
+					Thread.Sleep(1000);
+
+					return;
+
+				}
+				else if (IsMonkeyRightVisible)
+				{
+					IsMonkeyRightVisible = false;
+					MonkeyLeftCount = MonkeyLeftCount - 1 < 0 ? 0 : MonkeyLeftCount - 1;
+					MonkeysToMoveCounter = MonkeysToMoveCounter - 1 < 0 ? 0 : MonkeysToMoveCounter - 1;
+					MonkeysOnRopeCount = MonkeysOnRopeCount - 1 < 0 ? 0 : MonkeysOnRopeCount - 1;
+					NotifyPropertyChanged("IsMonkeyRightVisible");
+					NotifyPropertyChanged("MonkeyLeftCount");
+					Thread.Sleep(1000);
+
+					if (MonkeysToMoveCounter == 0)
+					{
+						IsArrowLeftVisible = false;
+						NotifyPropertyChanged("IsArrowLeftVisible");
+					}
+
+					return;
+				}
 			}
 		}
 

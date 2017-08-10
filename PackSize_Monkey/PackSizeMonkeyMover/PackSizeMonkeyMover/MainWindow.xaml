@@ -26,7 +26,7 @@
 			<ColumnDefinition Width="200" />
 		</Grid.ColumnDefinitions>
 		<StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center">
-			<Button Name="_addMonkeyLeft" Content="Add Monkey" Width="100" Height="50" Click="_addMonkeyLeft_Click" />
+			<Button Name="_addMonkeyLeft" Content="Add Monkey" Width="100" Height="50" Click="_addMonkeyLeft_Click" LostFocus="_addMonkeyLeft_LostFocus" />
 			<StackPanel Orientation="Horizontal">
 				<Image Name="_faceMonkeyLeft" Source="Resources\face_monkey.png" Height="50" Width="50" />
 				<TextBlock Name="_monkeyCountLeft" Text="{Binding MonkeyLeftCount, Mode=TwoWay}" FontSize="48" />
