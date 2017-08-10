@@ -6,17 +6,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace PackSize_MonkeyTest
 {
 	[TestClass]
-	public class TestMoveMonkeyRight
+	public class TestMoveMonkeyLeft
 	{
 		[TestMethod]
-		public void TestMoveRight()
+		public void TestMoveLeft()
 		{
 			//What follows is what I would test is I could get the solution imported.
 			//MonkeyViewModel newViewModel = new MonkeyViewModel();
 
-			//newViewModel.MonkeyRightCount = 5;
-			//newViewModel.MoveRight();
-			//Assert.AreEqual(0, newViewModel.MonkeyRightCount);
+			//newViewModel.MonkeyLeftCount = 5;
+			//newViewModel.MoveLeft();
+			//Assert.AreEqual(0, newViewModel.MonkeyLeftCount);
 		}
 	}
 }
