@@ -74,7 +74,7 @@ namespace TestWPFBinding
 			}
 
 			//MoveRight
-			if (MonkeyRightCount > 0 && MonkeyLeftCount == 0)
+			else if (MonkeyRightCount > 0 && MonkeyLeftCount == 0)
 			{
 				new Thread(() =>
 				{
@@ -86,6 +86,41 @@ namespace TestWPFBinding
 					MonkeysToMoveCounter = 5;
 				}).Start();
 
+			}
+
+			else if(MonkeyLeftCount >= MonkeyRightCount)
+			{
+				new Thread(() =>
+				{
+					Thread.CurrentThread.IsBackground = true;
+					while (MonkeysToMoveCounter > 0)
+					{
+						MoveLeft();
+					}
+					MonkeysToMoveCounter = 5;
+					while (MonkeysToMoveCounter > 0)
+					{
+						MoveRight();
+					}
+					MonkeysToMoveCounter = 5;
+				}).Start();
+			}
+			else
+			{
+				new Thread(() =>
+				{
+					Thread.CurrentThread.IsBackground = true;
+					while (MonkeysToMoveCounter > 0)
+					{
+						MoveRight();
+					}
+					MonkeysToMoveCounter = 5;
+					while (MonkeysToMoveCounter > 0)
+					{
+						MoveLeft();
+					}
+					MonkeysToMoveCounter = 5;
+				}).Start();
 			}
 
 		}

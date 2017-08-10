@@ -50,10 +50,9 @@
 			   Visibility="{Binding IsMonkeyLeftMiddleVisible, Converter={StaticResource VisibliltyConverter}}" />
 		<Image Name="_monkeyProgressRightMiddle" Source="Resources\face_monkey.png" Height="50" Width="50" Grid.Row="3" Grid.Column="3" 
 			   Visibility="{Binding IsMonkeyRightMiddleVisible, Converter={StaticResource VisibliltyConverter}}" />
+		<Image Name="_monkeyProgressRight" Source="Resources\face_monkey.png" Height="50" Width="50" Grid.Row="4" Grid.Column="4"
+				   Visibility="{Binding IsMonkeyRightVisible, Converter={StaticResource VisibliltyConverter}}" />
 
-		<StackPanel Height="50" Width="50" Grid.Row="4" Grid.Column="4" Visibility="{Binding IsMonkeyRightVisible, Converter={StaticResource VisibliltyConverter}}">
-			<Image Name="_monkeyProgressRight" Source="Resources\face_monkey.png" />
-		</StackPanel>
 		<GridSplitter Grid.Row="3" Grid.ColumnSpan="5" Width="Auto" Height="5" VerticalAlignment="Center" 
 					  HorizontalAlignment="Stretch" Background="Black" Margin="200,50,0,0"/>
 
